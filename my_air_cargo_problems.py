@@ -220,9 +220,15 @@ def air_cargo_p1() -> AirCargoProblem:
 
 def air_cargo_p2() -> AirCargoProblem:
     # 5 Airports
-    #airports = ['JFK', 'LAX', 'ORD', 'DFW', 'IAD', 'PDX', 'PDT', 'DEN', 'SFO', 'PHX', 'LAS']
-    airports = ['JFK', 'LAX', 'ORD', 'DFW', 'IAD2']
+    airports = ['JFK', 'LAX', 'ORD', 'DFW', 'IAD']
     return formulate_problem(airports, 0.5)
+
+
+def air_cargo_p3() -> AirCargoProblem:
+    # 3 Airports
+    airports = ['JFK', 'LAX', 'ORD']
+    return formulate_problem(airports, 1)
+
 
 
 def formulate_problem(airports, factor):
@@ -253,10 +259,4 @@ def formulate_problem(airports, factor):
                 neg.append(e1)
     init = FluentState(pos, neg)
     return AirCargoProblem(cargoes, planes, airports, init, goal)
-
-
-def air_cargo_p3() -> AirCargoProblem:
-    # 3 Airports
-    airports = ['JFK', 'LAX', 'ORD', 'DFW']
-    return formulate_problem(airports, 0.5)
 
