@@ -90,7 +90,7 @@ class AirCargoProblem(Problem):
                         effect_add = [expr("At({}, {})".format(c, ap))]
                         effect_rem = [expr("In({}, {})".format(c, p))]
                         unload = Action(expr("Unload({}, {})".format(c, p)), [precond_pos, precond_neg],
-                                      [effect_add, effect_rem])
+                                        [effect_add, effect_rem])
                         unloads.append(unload)
             return unloads
 
@@ -189,12 +189,12 @@ class AirCargoProblem(Problem):
         executed.
         '''
         # TODO implement (see Russell-Norvig Ed-3 10.2.3  or Russell-Norvig Ed-2 11.2)
-        count = 0
+        count = 2
         return count
 
 
 def air_cargo_p1() -> AirCargoProblem:
-    cargos = ['C1', 'C2']
+    cargoes = ['C1', 'C2']
     planes = ['P1', 'P2']
     airports = ['JFK', 'SFO']
     pos = [expr('At(C1, SFO)'),
@@ -215,31 +215,30 @@ def air_cargo_p1() -> AirCargoProblem:
     goal = [expr('At(C1, JFK)'),
             expr('At(C2, SFO)'),
             ]
-    return AirCargoProblem(cargos, planes, airports, init, goal)
+    return AirCargoProblem(cargoes, planes, airports, init, goal)
 
 
 def air_cargo_p2() -> AirCargoProblem:
     # 5 Airports
-    airports = ['JFK', 'LAX', 'ORD', 'DFW', 'IAD']
-    return formulate_problem(airports, 0.5)
+    airports = ['SFO', 'JFK', 'ATL']
+    return formulate_problem(airports, 3, 3)
 
 
 def air_cargo_p3() -> AirCargoProblem:
     # 3 Airports
-    airports = ['JFK', 'LAX', 'ORD']
-    return formulate_problem(airports, 1)
+    airports = ['SFO', 'JFK', 'ATL', 'ORD']
+    return formulate_problem(airports, 4, 2)
 
 
-
-def formulate_problem(airports, factor):
-    # 10 cargoes
-    cargoes = ['C' + str(x) for x in range(len(airports))]
-    # half planes
-    num_planes = max(int(factor*len(airports)), 1)
-    planes = ['P' + str(x) for x in range(num_planes)]
+def formulate_problem(airports, c, p):
+    cargoes = ['C' + str(x+1) for x in range(c)]
+    planes = ['P' + str(x+1) for x in range(p)]
     pos = []
     neg = []
     goal = []
+    for c in cargoes:
+        for p in planes:
+            neg.append(expr('In({}, {})'.format(c, p)))
     for ia, a in enumerate(airports):
         for ic, c in enumerate(cargoes):
             e = expr('At({}, {})'.format(c, a))
@@ -249,8 +248,7 @@ def formulate_problem(airports, factor):
                 neg.append(e)
             if ic == len(airports) - ia - 1:
                 goal.append(expr('At({}, {})'.format(c, a)))
-            for ip, p in enumerate(planes):
-                neg.append(expr('In({}, {})'.format(c, p)))
+
         for ip, p in enumerate(planes):
             e1 = expr('At({}, {})'.format(p, a))
             if ip == ia:
@@ -259,4 +257,3 @@ def formulate_problem(airports, factor):
                 neg.append(e1)
     init = FluentState(pos, neg)
     return AirCargoProblem(cargoes, planes, airports, init, goal)
-
