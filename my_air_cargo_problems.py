@@ -188,8 +188,11 @@ class AirCargoProblem(Problem):
         conditions by ignoring the preconditions required for an action to be
         executed.
         '''
-        # TODO implement (see Russell-Norvig Ed-3 10.2.3  or Russell-Norvig Ed-2 11.2)
-        count = 2
+        count = 0
+        x = decode_state(node.state, self.state_map)
+        for g in self.goal:
+            if g in x.neg:
+                count += 1
         return count
 
 
