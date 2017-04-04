@@ -543,4 +543,6 @@ class PlanningGraph():
             if len(a) > 0:
                 gs = gs.difference(a)
                 level_sum += len(a) * x
+                if len(gs) == 0:
+                    break
         return level_sum
