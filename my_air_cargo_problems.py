@@ -222,13 +222,11 @@ def air_cargo_p1() -> AirCargoProblem:
 
 
 def air_cargo_p2() -> AirCargoProblem:
-    # 5 Airports
     airports = ['SFO', 'JFK', 'ATL']
     return formulate_problem(airports, 3, 3)
 
 
 def air_cargo_p3() -> AirCargoProblem:
-    # 3 Airports
     airports = ['SFO', 'JFK', 'ATL', 'ORD']
     return formulate_problem(airports, 4, 2)
 
